@@ -7,8 +7,12 @@
     "test": "eslint . && jest --coverage --runInBand",
     "test-nolint": "jest --coverage --runInBand --detectOpenHandles",
     "test-noexit": "eslint . && jest --coverage --runInBand",
+    "test-mocha": "mocha ./src/test",
     "build": "babel src -d build",
     "start": "node index.js"
+  },
+  "mocha": {
+    "require": "./src/test/lib/test.env.js"
   },
   "author": "Kris",
   "license": "MIT",
@@ -18,11 +22,14 @@
     "@babel/register": "^7.4.4",
     "babel-eslint": "^10.0.1",
     "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-jest": "^22.5.1",
+    "eslint-plugin-mocha": "^5.3.0",
     "jest": "^24.7.1",
+    "mocha": "^6.1.4",
     "mongoose": "^5.5.4"
   },
   "dependencies": {

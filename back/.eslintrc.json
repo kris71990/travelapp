@@ -1,7 +1,10 @@
 {
   "extends": ["airbnb-base","plugin:jest/recommended"],
   "parser": "babel-eslint",
-  "plugins": ["jest"],
+  "plugins": ["mocha"],
+  "env": {
+    "mocha": true
+  },
   "rules": {
     "arrow-body-style": "off",
     "class-methods-use-this": "off",
@@ -11,6 +14,10 @@
     "no-multi-assign": "off",
     "no-param-reassign": ["error", { "props": false }],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "prefer-arrow-callback": 0,
+    "mocha/prefer-arrow-callback": 2,
+    "func-names": "off",
+    "space-before-function-paren": "off",
     "no-trailing-spaces":"off",
     "no-underscore-dangle": "off",
     "strict": "off",
