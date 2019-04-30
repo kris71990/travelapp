@@ -6,12 +6,15 @@ import HttpError from 'http-errors';
 import mongoose from 'mongoose';
 
 import logger from './logger';
+import accountRouter from '../routes/account-router';
 import errorMiddleware from './error-middleware';
 
 const app = express();
 let server = null;
 
 app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
+
+app.use(accountRouter);
 
 app.all('*', (request, response) => {
   logger.log(logger.INFO, '404 - not found (catch-all)');
