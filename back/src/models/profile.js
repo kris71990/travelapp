@@ -16,16 +16,18 @@ const profileSchema = mongoose.Schema({
   },
   locationsVisited: {
     type: Object,
+    default: {},
   },
   locationsToVisit: {
     type: Object,
+    default: {},
   },
   account: {
     type: mongoose.Schema.ObjectId,
     required: true,
     unique: true,
   },
-});
+}, { minimize: false });
 
 const Profile = mongoose.model('profile', profileSchema);
 

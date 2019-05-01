@@ -4,17 +4,31 @@ import faker from 'faker';
 import Profile from '../../models/profile';
 import { createAccountMock, removeAccountMock } from './account-mock';
 
-const createProfileMock = () => {
+const createProfileMock = (isActive) => {
   const mock = {};
 
   return createAccountMock()
     .then((accountMock) => {
       mock.account = accountMock;
+      let visited, toVisit;
+
+      if (isActive) {
+        visited = {
+          [faker.lorem.word()] : [faker.lorem.word(), faker.lorem.word()],
+          [faker.lorem.word()] : [faker.lorem.word(), faker.lorem.word()],
+        }
+        toVisit = {
+          [faker.lorem.word()] : [faker.lorem.word(), faker.lorem.word()],
+          [faker.lorem.word()] : [faker.lorem.word(), faker.lorem.word()],
+        }
+      }
 
       return new Profile({
         firstName: faker.name.firstName(),
         age: faker.random.number(),
         hometown: faker.address.state(),
+        locationsVisited: visited ? visited : {},
+        locationsToVisit: toVisit ? toVisit : {},
         account: mock.account.account._id,
       }).save();
     })

@@ -19,8 +19,8 @@ GET /profile/me - 200 - success
 GET /profile/me - 401 - fails if missing account authentication token
 GET /profile/me - 404 - fails if account does not exist
 
-TODO --- PUT /profile/:id - 200 - success
-TODO --- PUT /profile/:id - 401 - fails if missing account authentication token
+PUT /profile/:id - 200 - success (adding data, and creating new data)
+PUT /profile/:id - 401 - fails if missing account authentication token
 TODO --- PUT /profile/:id - 400 - fails if profile id is incorrect, missing, or if required data is deleted
 
 TODO --- DELETE /profile/:id - 200 - success
@@ -101,7 +101,7 @@ describe('Profile Router', function() {
     });
 
     it('should return 409 if profile already exists', function() {
-      return createProfileMock()
+      return createProfileMock(false)
         .then((mock) => {
           return superagent.post(`${API_URL}/profile`)
             .set('Authorization', `Bearer ${mock.account.token}`)
@@ -121,7 +121,7 @@ describe('Profile Router', function() {
   describe('GET /profile/me', function() {
     it('should return 200 and profile', function() {
       let mock;
-      return createProfileMock()
+      return createProfileMock(false)
         .then((profileMock) => {
           mock = profileMock;
           return superagent.get(`${API_URL}/profile/me`)
@@ -155,6 +155,65 @@ describe('Profile Router', function() {
           assert.equal(res.status, 404, 'Profile not found');
           assert.notExists(res.body);
         });
+    });
+  });
+
+  describe('PUT /profile/:id', function() {
+    it('should return 200 and updated profile (when location data exists)', function() {
+      return createProfileMock(true)
+        .then((mock) => {
+          return superagent.put(`${API_URL}/profile/${mock.profile._id}`)
+            .set('Authorization', `Bearer ${mock.account.token}`)
+            .send({
+              firstName: 'kris',
+              hometown: 'seattle',
+              locationsToVisit: {
+                'china': ['beijing'],
+              }
+            });
+        })
+        .then((res) => {
+          assert.equal(res.status, 200, 'Profile updated - data added');
+          assert.isObject(res.body.locationsToVisit);
+          assert.isObject(res.body.locationsVisited);
+          assert.lengthOf(Object.keys(res.body.locationsVisited), 2);
+          assert.lengthOf(Object.keys(res.body.locationsToVisit), 3);
+          assert.property(res.body.locationsToVisit, 'china');
+          assert.equal(res.body.locationsToVisit['china'][0], ['beijing'])
+        });
+    });
+
+    it.only('should return 200 and updated profile (with new location data)', function() {
+      return createProfileMock(false)
+        .then((mock) => {
+          return superagent.put(`${API_URL}/profile/${mock.profile._id}`)
+            .set('Authorization', `Bearer ${mock.account.token}`)
+            .send({ 
+              firstName: 'kris',
+              hometown: 'seattle',
+              locationsVisited: { 'russia': ['moscow'] } 
+            });
+        })
+        .then((res) => {
+          assert.equal(res.status, 200, 'Profile updated - new data');
+          assert.isObject(res.body.locationsVisited);
+          assert.notExists(res.body.locationsToVisit);
+          assert.lengthOf(res.body.locationsVisited['russia'], 1);
+          assert.hasAllKeys(res.body.locationsVisited, ['russia']);
+          assert.propertyVal(res.body.locationsVisited, 'russia', ['moscow'])
+        })
+    });
+
+    it('should return 401 if no token', function() {
+      return createProfileMock(false)
+        .then((mock) => {
+          return superagent.put(`${API_URL}/profile/${mock.profile._id}`)
+            .send({ locationsVisited: { 'russia': ['moscow'] } });
+        })
+        .catch((res) => {
+          assert.equal(res.status, 401, 'Unauthorized - no token');
+          assert.notExists(res.body);
+        })
     });
   });
 });

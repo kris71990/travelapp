@@ -12,8 +12,10 @@ const profileRouter = new Router();
 const jsonParser = json();
 
 profileRouter.post('/profile', bearerAuthMiddleware, jsonParser, (request, response, next) => {
-  const { firstName, age, hometown, locationsVisted, locationsToVisit } = request.body;
-  if (!firstName || !hometown || !request.account ) return next(new HttpError(400, 'Bad Request'));
+  const { firstName, hometown } = request.body;
+  if (!firstName || !hometown || !request.account ) {
+    return next(new HttpError(400, 'Bad Request'));
+  }
   logger.log(logger.INFO, 'Processing a POST on /profile');
 
   return new Profile({
@@ -25,7 +27,7 @@ profileRouter.post('/profile', bearerAuthMiddleware, jsonParser, (request, respo
     return response.json(profile);
   })
   .catch(next);
-})
+});
 
 profileRouter.get('/profile/me', bearerAuthMiddleware, (request, response, next) => {
   logger.log(logger.INFO, 'Processing a GET on /profile/me');
@@ -37,6 +39,62 @@ profileRouter.get('/profile/me', bearerAuthMiddleware, (request, response, next)
       return response.json(profile);
     })
     .catch(next);
-})
+});
+
+profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, response, next) => {
+  logger.log(logger.INFO, 'Processing a PUT on /profile/:id');
+  const { firstName, age, hometown, locationsVisited, locationsToVisit } = request.body;
+  if (!firstName || !hometown || !request.account) {
+    return next(new HttpError(400, 'Bad Request'))
+  }
+
+  console.log(request.body);
+
+  return Profile.findByIdAndUpdate(request.params.id, {
+    firstName, age, hometown,
+  })
+    .then((profile) => {
+      if (!locationsVisited && !locationsToVisit) {
+        logger.log(logger.INFO, 'Profile Updated');
+        return response.json(profile);
+      } else {
+        logger.log(logger.INFO, 'Updating location data...');
+        
+        if (locationsVisited) {
+          console.log(locationsVisited)
+          console.log(profile);
+          let countryVisited = Object.keys(locationsVisited)[0];
+          let citiesVisited = locationsVisited[countryVisited];
+
+          if (!Object.keys(profile.locationsVisited).includes(countryVisited)) {
+            logger.log(logger.INFO, 'Adding new country and cities - visited list');
+            console.log(profile.locationsVisited);
+            profile.locationsVisited[`${countryVisited}`] = citiesVisited;
+            profile.save();
+          } else {
+            logger.log(logger.INFO, 'Adding cities - visited list');
+            profile.locationsVisited[countryVisited].push([...citiesVisited]);
+            profile.save();
+          }
+        } else {
+          let countryToVisit = Object.keys(locationsToVisit)[0];
+          let citiesToVisit = locationsToVisit[countryToVisit];
+
+          if (!Object.keys(profile.locationsToVisit).includes(countryToVisit)) {
+            logger.log(logger.INFO, 'Adding new country and cities - to visit list');
+            profile.locationsToVisit[countryToVisit] = citiesToVisit;
+            profile.save();
+          } else {
+            logger.log(logger.INFO, 'Adding cities - to visit list');
+            profile.locationsToVisit[countryToVisit].push([...citiesToVisit]);
+            profile.save();
+          }
+        logger.log(logger.INFO, 'Profile Updated');
+        return response.json(profile);
+        }
+      }
+    })
+    .catch(next);
+});
 
 export default profileRouter;
