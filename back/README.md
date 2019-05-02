@@ -1,7 +1,7 @@
 # Travel Aid - Backend
 
 ![Travis (.com) branch](https://img.shields.io/travis/com/kris71990/travelapp/master.svg?style=popout)
-![Coverage](https://img.shields.io/badge/coverage-96%-brightgreen.svg)
+![Coverage](https://img.shields.io/badge/coverage-96%25-bright%20green.svg)
 [![David](https://img.shields.io/david/expressjs/express.svg)]( https://github.com/kris71990/travelapp)
 ![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/kris71990/travelapp)
@@ -12,7 +12,7 @@
 
 ## Overview
 
-A server built with *Node*, *Express*, managing data storage with *MongoDB* and **Mongoose**. This application simply allows a user to keep track of the travel destinations they've visited and want to visit. 
+A server built with **Node**, **Express**, managing data storage with **MongoDB** and **Mongoose**. This application simply allows a user to keep track of the travel destinations they've visited and want to visit. 
 
 ## Documentation
 
