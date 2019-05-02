@@ -3,6 +3,4 @@ node_js:
   - "10"
 services: 
   - mongodb
-env:
-  - TEST_DIR=back
-script: cd $TEST_DIR && npm install && npm test-quick
+script: cd back && npm install && npm test
