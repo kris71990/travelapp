@@ -1,15 +1,8 @@
 language: node_js
 node_js:
-  - "node"
+  - "10"
 services: 
   - mongodb
 env:
-  global:
-    - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-script: cd back && npm install && npm test-quick
+  - TEST_DIR=back
+script: cd $TEST_DIR && npm install && npm test-quick
