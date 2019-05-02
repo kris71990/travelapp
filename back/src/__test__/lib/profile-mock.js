@@ -10,17 +10,18 @@ const createProfileMock = (isActive) => {
   return createAccountMock()
     .then((accountMock) => {
       mock.account = accountMock;
-      let visited, toVisit;
+      let visited; 
+      let toVisit;
 
       if (isActive) {
         visited = {
-          [faker.lorem.word()] : [faker.lorem.word(), faker.lorem.word()],
-          [faker.lorem.word()] : [faker.lorem.word(), faker.lorem.word()],
-        }
+          [faker.lorem.word()]: [faker.lorem.word(), faker.lorem.word()],
+          [faker.lorem.word()]: [faker.lorem.word(), faker.lorem.word()],
+        };
         toVisit = {
-          [faker.lorem.word()] : [faker.lorem.word(), faker.lorem.word()],
-          [faker.lorem.word()] : [faker.lorem.word(), faker.lorem.word()],
-        }
+          [faker.lorem.word()]: [faker.lorem.word(), faker.lorem.word()],
+          [faker.lorem.word()]: [faker.lorem.word(), faker.lorem.word()],
+        };
       }
 
       return new Profile({
@@ -35,14 +36,14 @@ const createProfileMock = (isActive) => {
     .then((profile) => {
       mock.profile = profile;
       return mock;
-    })
+    });
 };
 
 const removeProfileMock = () => {
   return Promise.all([
     Profile.deleteMany({}),
     removeAccountMock(),
-  ])
+  ]);
 };
 
 export { createProfileMock, removeProfileMock };

@@ -144,13 +144,19 @@ describe('Account Router', function() {
     });
 
     it('should return 400 if no credentials', function() {
-      return createAccountMock()
-        .then((accountMock) => {
-          return superagent.get(`${API_URL}/login`)
-            .catch((res) => {
-              assert.equal(res.status, 400, 'Login failed - no credentials');
-              assert.notExists(res.body);
-            });
+      return superagent.get(`${API_URL}/login`)
+        .catch((res) => {
+          assert.equal(res.status, 400, 'Login failed - no credentials');
+          assert.notExists(res.body);
+        });
+    });
+
+    it('should return 401 with malformed token', function() {
+      return superagent.get(`${API_URL}/profile/me`)
+        .set('Authorization', `Bearer sfdsffsfw32343`) // eslint-disable-line
+        .catch((res) => {
+          assert.equal(res.status, 401, 'Unauthorized - malformed token');
+          assert.notExists(res.body);
         });
     });
   });
@@ -162,5 +168,5 @@ describe('Account Router', function() {
           assert.equal(res.status, 404, 'Route not found - Catch All');
         });
     });
-  })
+  });
 });

@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - "node"
+services: 
+  - mongodb
+env:
+  - TEST_DIR=back
+script: cd $TEST_DIR && npm install && npm test-quick
