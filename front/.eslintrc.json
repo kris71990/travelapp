@@ -29,6 +29,6 @@
     "no-case-declarations": "off",
     "import/no-dynamic-require": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deops": "warn"
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
