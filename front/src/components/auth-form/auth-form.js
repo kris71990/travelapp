@@ -1,13 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-function AuthForm() {
+function AuthForm(props) {
+  const { onComplete, type } = props;
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  useEffect(() => console.log('woot'));
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (type === 'login') {
+      return onComplete({ username, password })
+        .then(() => {
+          return () => {
+            setUsername('');
+            setPassword('');
+          };
+        });
+    }
+    
+    return onComplete({ username, email, password })
+      .then(() => {
+        return () => {
+          setUsername('');
+          setEmail('');
+          setPassword('');
+        };
+      });
   }
 
   function handleChange(e) {
@@ -18,6 +37,9 @@ function AuthForm() {
       case 'password':
         setPassword(e.target.value);
         break;
+      case 'email':
+        setEmail(e.target.value);
+        break;
       default:
         return undefined;
     }
@@ -25,7 +47,7 @@ function AuthForm() {
   }
 
   return (
-    <form className='auth-form' onSubmit={handleSubmit}>
+    <form className='auth-form' onSubmit={ handleSubmit }>
       <input
         name='username'
         placeholder='username'
@@ -33,6 +55,17 @@ function AuthForm() {
         value={username}
         onChange={handleChange}
       />
+      {
+        type === 'signup' ? 
+          <input
+            name='email'
+            placeholder='email'
+            type='email'
+            value={email}
+            onChange={handleChange}
+          />
+          : null
+      }
       <input
         name='password'
         placeholder='password'
@@ -40,9 +73,14 @@ function AuthForm() {
         value={password}
         onChange={handleChange}
       />
-      <button type="submit">Signup</button>
+      <button type="submit">{ type === 'login' ? 'Login' : 'Signup' }</button>
     </form>
   );
 }
+
+AuthForm.propTypes = {
+  onComplete: PropTypes.func,
+  type: PropTypes.string,
+};
 
 export default AuthForm;

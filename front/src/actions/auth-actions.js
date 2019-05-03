@@ -20,7 +20,7 @@ const signupRequest = user => (store) => {
     .send(user)
     .withCredentials()
     .then((res) => {
-      return store.dispatch(setToken(res.text));
+      return store.dispatch(setToken(res.body.token));
     });
 };
 
@@ -29,7 +29,8 @@ const loginRequest = user => (store) => {
     .auth(user.username, user.password)
     .withCredentials()
     .then((res) => {
-      return store.dispatch(setToken(res.text));
+      console.log(res);
+      return store.dispatch(setToken(res.body.token));
     });
 };
 
