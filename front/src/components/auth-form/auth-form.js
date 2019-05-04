@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import './auth-form.scss';
+
 function AuthForm(props) {
   const { onComplete, type } = props;
   const [username, setUsername] = useState('');
