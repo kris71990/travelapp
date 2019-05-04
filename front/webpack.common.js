@@ -18,7 +18,7 @@ webpackConfig.output = {
 
 webpackConfig.plugins = [
   new HtmlWebpackPlugin({
-    title: 'Language Cards',
+    title: 'Travel Aid',
     filename: 'index.html',
     template: 'index.html',
     inject: true,
