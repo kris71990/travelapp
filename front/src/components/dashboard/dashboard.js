@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import ProfileForm from '../profile-form/profile-form';
+import PlaceForm from '../place-form/place-form';
 import * as authActions from '../../actions/auth-actions';
 import * as profileActions from '../../actions/profile-actions';
 
@@ -22,9 +23,13 @@ function Dashboard(props) {
     setEdit(!edit);
   }
 
-  function handleUpdate(prof) {
+  function handleUpdateSimple(prof) {
     updateProfile(prof)
       .then(() => handleEdit());
+  }
+
+  function handleUpdateComplex(prof) {
+    updateProfile(prof);
   }
 
   let headerJSX; 
@@ -50,25 +55,18 @@ function Dashboard(props) {
   return (
     <div className="dashboard">
       { headerJSX }
-      {/* <div id="header">
-        <h1>TravelAid</h1>
-        { profile ? <h1>Welcome {profile.firstName}</h1> : null }
-        { profile ? 
-          <div>
-            <button onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</button>
-            <button onClick={ logout }>Logout</button>
-          </div>
-          : <div><button onClick={ logout }>Logout</button></div>
-        }
-      </div> */}
       { profile && !edit
-        ? <h1>Map here</h1> 
+        ? 
+          <div>
+            <PlaceForm profile={ profile } type="visited" onComplete={ updateProfile }/> 
+            <PlaceForm profile={ profile } type="toVisit" onComplete={ updateProfile }/> 
+          </div>
         : 
         <div className="prof">
           <h3>{ profile ? 'Edit' : 'Create' } your profile.</h3>
           {
             profile ? 
-              <ProfileForm profile={ profile } onComplete={ handleUpdate }/> 
+              <ProfileForm profile={ profile } onComplete={ handleUpdateSimple }/> 
               : <ProfileForm onComplete={ createProfile }/> 
           }
         </div>
