@@ -42,6 +42,7 @@ profileRouter.get('/profile/me', bearerAuthMiddleware, (request, response, next)
 });
 
 profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, response, next) => {
+  console.log(request.body);
   logger.log(logger.INFO, 'Processing a PUT on /profile/:id');
   const { 
     firstName, age, hometown, locationsVisited, locationsToVisit, 
@@ -52,9 +53,10 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
 
   return Profile.findByIdAndUpdate(request.params.id, {
     firstName, age, hometown,
-  })
+  }, { new: true })
     .then((profile) => {
-      if (!locationsVisited && !locationsToVisit) {
+      if ((!locationsVisited || locationsVisited === {}) 
+      && (!locationsToVisit || locationsToVisit === {})) {
         logger.log(logger.INFO, 'Profile Updated');
         return response.json(profile);
       }
@@ -71,7 +73,8 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
             .then((profileSaved) => {
               logger.log(logger.INFO, 'Profile updated');
               return response.json(profileSaved);
-            });
+            })
+            .catch(next);
         } else {
           logger.log(logger.INFO, 'Adding cities to existing country - visited list');
           profile.locationsVisited[countryVisited].push(...citiesVisited);

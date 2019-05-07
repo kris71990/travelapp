@@ -29,7 +29,6 @@ const loginRequest = user => (store) => {
     .auth(user.username, user.password)
     .withCredentials()
     .then((res) => {
-      console.log(res);
       return store.dispatch(setToken(res.body.token));
     });
 };

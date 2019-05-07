@@ -2,4 +2,44 @@ body {
   height: 100%;
   width: 100%;
   background-color: #7D8184;
+
+  #header {
+    width: 100%;
+    text-align: left;
+    position: absolute;
+    top: 0;
+    * {
+      display: inline-block;
+    }
+    div {
+      float: right;
+    }
+    button {
+      padding: 10px;
+      margin: 20px;
+    }
+    h1 {
+      padding: 5px;
+      margin: 20px;
+    } 
+  }
+
+  button {
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 5px 20px;
+    background-color: #BFCBD4;
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  button:active {
+    background-color: #A4A4A4;
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
 }
