@@ -27,10 +27,31 @@ function Dashboard(props) {
       .then(() => handleEdit());
   }
 
+  let headerJSX; 
+  if (profile) {
+    headerJSX = 
+      <header>
+        <h1>TravelAid - Welcome { profile.firstName }.</h1>
+        <div>
+          <button onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</button>
+          <button onClick={ logout }>Logout</button>
+        </div>
+      </header>;
+  } else {
+    headerJSX = 
+      <header>
+        <h1>TravelAid</h1>
+        <div>
+          <button onClick={ logout }>Logout</button>
+        </div>
+      </header>;
+  }
+
   return (
     <div className="dashboard">
-      <div id="header">
-        {/* <h1>TravelAid</h1> */}
+      { headerJSX }
+      {/* <div id="header">
+        <h1>TravelAid</h1>
         { profile ? <h1>Welcome {profile.firstName}</h1> : null }
         { profile ? 
           <div>
@@ -39,7 +60,7 @@ function Dashboard(props) {
           </div>
           : <div><button onClick={ logout }>Logout</button></div>
         }
-      </div>
+      </div> */}
       { profile && !edit
         ? <h1>Map here</h1> 
         : 
