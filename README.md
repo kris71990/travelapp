@@ -1,4 +1,4 @@
-# Travel Aid - Backend
+# Travel Aid
 
 ![Travis (.com) branch](https://img.shields.io/travis/com/kris71990/travelapp/master.svg?style=popout)
 ![Coverage](https://img.shields.io/badge/coverage-96%25-bright%20green.svg)

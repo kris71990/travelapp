@@ -22,8 +22,9 @@ function Dashboard(props) {
     setEdit(!edit);
   }
 
-  function handleUpdate() {
-    return updateProfile(profile);
+  function handleUpdate(prof) {
+    updateProfile(prof)
+      .then(() => handleEdit());
   }
 
   return (
@@ -33,7 +34,7 @@ function Dashboard(props) {
         { profile ? <h1>Welcome {profile.firstName}</h1> : null }
         { profile ? 
           <div>
-            <button onClick={ handleEdit }>Edit</button>
+            <button onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</button>
             <button onClick={ logout }>Logout</button>
           </div>
           : <div><button onClick={ logout }>Logout</button></div>
@@ -46,7 +47,7 @@ function Dashboard(props) {
           <h3>{ profile ? 'Edit' : 'Create' } your profile.</h3>
           {
             profile ? 
-              <ProfileForm profile={profile} onComplete={ handleUpdate }/> 
+              <ProfileForm profile={ profile } onComplete={ handleUpdate }/> 
               : <ProfileForm onComplete={ createProfile }/> 
           }
         </div>

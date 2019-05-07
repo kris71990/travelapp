@@ -23,14 +23,7 @@ function ProfileForm(props) {
     
     return onComplete({ 
       firstName, age, hometown, _id: profile._id, 
-    })
-      .then(() => {
-        return () => {
-          setFirstName('');
-          setAge('');
-          setHometown('');
-        };
-      });
+    });
   }
 
   function handleChange(e) {
