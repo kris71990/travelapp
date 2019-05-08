@@ -10,16 +10,19 @@ function CityForm(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!country || !cities) return null;
+
+    const formatPayload = { [country]: cities };
     
     switch (type) {
       case 'visited':
         return onComplete({ 
-          _id: profile._id, locationsVisited: country, 
+          _id: profile._id, locationsVisited: formatPayload, 
         })
           .then(() => setCountry(''));
       case 'toVisit':
         return onComplete({ 
-          _id: profile._id, locationsToVisit: country, 
+          _id: profile._id, locationsToVisit: formatPayload, 
         })
           .then(() => setCountry(''));
       default:
@@ -66,7 +69,7 @@ function CityForm(props) {
   }
 
   return (
-    <form className="city-form">
+    <form className="city-form" onSubmit={ handleSubmit }>
       { type === 'visited' 
         ? <h5>Add locations you have visited:</h5>
         : <h5>Add locations you want to visit:</h5>
