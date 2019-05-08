@@ -19,12 +19,18 @@ function CityForm(props) {
         return onComplete({ 
           _id: profile._id, locationsVisited: formatPayload, 
         })
-          .then(() => setCountry(''));
+          .then(() => {
+            setCountry('');
+            setCities('');
+          });
       case 'toVisit':
         return onComplete({ 
           _id: profile._id, locationsToVisit: formatPayload, 
         })
-          .then(() => setCountry(''));
+          .then(() => {
+            setCountry('');
+            setCities('');
+          });
       default:
         return null;
     }
@@ -74,7 +80,7 @@ function CityForm(props) {
         ? <h5>Add locations you have visited:</h5>
         : <h5>Add locations you want to visit:</h5>
       }
-      <select onChange={ handleChange }>
+      <select onChange={ handleChange } value={ country }>
         <option value="">Select</option>
         { selectJSX }
       </select>

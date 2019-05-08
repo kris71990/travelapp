@@ -48,6 +48,7 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
     firstName, age, hometown, locationsVisited, locationsToVisit, 
   } = request.body;
   
+  // simple profile update of name, age, or hometown
   if (!locationsVisited && !locationsToVisit) {
     if (!firstName || !hometown || !request.account) {
       return next(new HttpError(400, 'Bad Request'));
@@ -64,6 +65,8 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
 
   logger.log(logger.INFO, 'Updating location data...');
 
+  // cannot add cities and country at the same time
+  // if locationsVisited is a string, it is a country 
   if (locationsVisited) {
     if (typeof locationsVisited === 'string') {
       logger.log(logger.INFO, 'Adding new country to visited list');
@@ -78,15 +81,24 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
         .catch(next);
     } 
 
-    // if type is object (russia: [moscow, spb, etc]), update country with cities
+    // if it is an object { russia: [moscow, spb, etc] }, update country with cities
     logger.log(logger.INFO, 'Adding cities to existing country - visited list');
     const country = Object.keys(locationsVisited)[0];
-    const cities = Object.values(locationsVisited);
+    const cities = locationsVisited[country].split(',').map((city) => {
+      return city.trim();
+    });
+
     return Profile.findOneAndUpdate({ _id: request.params.id }, {
-      $push: { [`locationsVisited.${country}`]: [...cities] },
-    }, { new: true });
+      $push: { [`locationsVisited.${country}`]: { $each: cities } },
+    }, { new: true })
+      .then((profile) => {
+        logger.log(logger.INFO, 'Profile updated');
+        return response.json(profile);
+      })
+      .catch(next);
   }
 
+  // if locationsToVisit is a string, it is a country
   if (typeof locationsToVisit === 'string') {
     logger.log(logger.INFO, 'Adding new country to to-visit list');
     const country = locationsToVisit;
@@ -100,70 +112,20 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
       .catch(next);
   }
 
-  // if type is object (russia: [moscow, spb, etc]), update country with cities
+  // if it is an object { russia: [moscow, spb, etc] }, update country with cities
   logger.log(logger.INFO, 'Adding cities to existing country - to-visit list');
   const country = Object.keys(locationsToVisit)[0];
-  const cities = Object.values(locationsToVisit);
+  const cities = locationsToVisit[country].split(',').map((city) => {
+    return city.trim();
+  });
   return Profile.findOneAndUpdate({ _id: request.params.id }, {
-    $push: { [`locationsVisited.${country}`]: [...cities] },
-  }, { new: true });
-
-  
-  // if (locationsVisited) {
-  //   const countryVisited = Object.keys(locationsVisited)[0];
-  //   const citiesVisited = locationsVisited[countryVisited];
-    
-  //   return Profile.findById(request.params.id)
-  //     .then((profile) => {
-  //       if (!Object.keys(profile.locationsVisited).includes(countryVisited)) {
-  //         logger.log(logger.INFO, 'Adding new country and cities - visited list');
-  //         profile.locationsVisited[countryVisited] = citiesVisited;
-  //         profile.save()
-  //           .then((profileSaved) => {
-  //             logger.log(logger.INFO, 'Profile updated');
-  //             return response.json(profileSaved);
-  //           })
-  //           .catch(next);
-  //       }
-
-  //       logger.log(logger.INFO, 'Adding cities to existing country - visited list');
-  //       profile.locationsVisited[countryVisited].push(...citiesVisited);
-  //       profile.save()
-  //         .then((profileSaved) => {
-  //           logger.log(logger.INFO, 'Profile updated');
-  //           return response.json(profileSaved);
-  //         })
-  //         .catch(next);
-  //     })
-  //     .catch(next);
-  // }
-
-  // const countryToVisit = Object.keys(locationsToVisit)[0];
-  // const citiesToVisit = locationsToVisit[countryToVisit];
-
-  // return Profile.findById(request.params.id)
-  //   .then((profile) => {
-  //     if (!Object.keys(profile.locationsToVisit).includes(countryToVisit)) {
-  //       logger.log(logger.INFO, 'Adding new country and cities - to visit list');
-  //       profile.locationsToVisit[countryToVisit] = citiesToVisit;
-  //       profile.save()
-  //         .then((profileSaved) => {
-  //           logger.log(logger.INFO, 'Profile updated');
-  //           return response.json(profileSaved);
-  //         })
-  //         .catch(next);
-  //     }
-
-  //     logger.log(logger.INFO, 'Adding cities to existing country - to visit list');
-  //     profile.locationsToVisit[countryToVisit].push(...citiesToVisit);
-  //     profile.save()
-  //       .then((profileSaved) => {
-  //         logger.log(logger.INFO, 'Profile updated');
-  //         return response.json(profileSaved);
-  //       })
-  //       .catch(next);
-  //   })
-  //   .catch(next);
+    $push: { [`locationsToVisit.${country}`]: { $each: cities } },
+  }, { new: true })
+    .then((profile) => {
+      logger.log(logger.INFO, 'Profile updated');
+      return response.json(profile);
+    })
+    .catch(next);
 });
 
 export default profileRouter;
