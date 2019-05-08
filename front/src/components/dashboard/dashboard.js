@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import ProfileForm from '../profile-form/profile-form';
 import PlaceForm from '../place-form/place-form';
+import CityForm from '../city-form/city-form';
 import PlaceList from '../places-list/places-list';
 import * as authActions from '../../actions/auth-actions';
 import * as profileActions from '../../actions/profile-actions';
@@ -64,6 +65,8 @@ function Dashboard(props) {
             <div id="forms">
               <PlaceForm profile={ profile } type="visited" onComplete={ updateProfile }/> 
               <PlaceForm profile={ profile } type="toVisit" onComplete={ updateProfile }/> 
+              <CityForm profile={ profile } type="visited" onComplete={ updateProfile }/>
+              <CityForm profile={ profile } type="toVisit" onComplete={ updateProfile }/>
             </div>
           </div>
         : 
