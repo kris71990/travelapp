@@ -5,6 +5,17 @@
   justify-content: center;
   flex-flow: column;
   height: 100vh;
+
+  .locs {
+    display: flex;
+    flex-direction: row;
+    #list {
+      flex: 1;
+    }
+    #forms {
+      flex: 1;
+    }
+  }
   
   .prof {
     width: 50vw;

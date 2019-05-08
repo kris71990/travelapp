@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import './place-form.scss';
+
 function CountryForm(props) {
   const { profile, type, onComplete } = props;
   const [country, setCountry] = useState('');

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import ProfileForm from '../profile-form/profile-form';
 import PlaceForm from '../place-form/place-form';
+import PlaceList from '../places-list/places-list';
 import * as authActions from '../../actions/auth-actions';
 import * as profileActions from '../../actions/profile-actions';
 
@@ -26,10 +27,6 @@ function Dashboard(props) {
   function handleUpdateSimple(prof) {
     updateProfile(prof)
       .then(() => handleEdit());
-  }
-
-  function handleUpdateComplex(prof) {
-    updateProfile(prof);
   }
 
   let headerJSX; 
@@ -57,9 +54,17 @@ function Dashboard(props) {
       { headerJSX }
       { profile && !edit
         ? 
-          <div>
-            <PlaceForm profile={ profile } type="visited" onComplete={ updateProfile }/> 
-            <PlaceForm profile={ profile } type="toVisit" onComplete={ updateProfile }/> 
+          <div className="locs">
+            <div id="list">
+              <h3>Recently Visited.</h3>
+              <PlaceList locations={ profile.locationsVisited }/>
+              <h3>Next to visit.</h3>
+              <PlaceList locations={ profile.locationsToVisit }/>
+            </div>
+            <div id="forms">
+              <PlaceForm profile={ profile } type="visited" onComplete={ updateProfile }/> 
+              <PlaceForm profile={ profile } type="toVisit" onComplete={ updateProfile }/> 
+            </div>
           </div>
         : 
         <div className="prof">
