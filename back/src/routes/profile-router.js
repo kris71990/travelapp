@@ -81,7 +81,6 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
       return Profile.findOneAndUpdate({ _id: request.params.id }, {
         $push: { locationsVisited: newCountry },
       }, { new: true })
-      // $set: { [`locationsVisited.${country}`]: [] }, 
         .then((profile) => {
           logger.log(logger.INFO, 'Profile updated');
           return response.json(profile);
@@ -92,12 +91,15 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
     // if it is an object { russia: [moscow, spb, etc] }, update country with cities
     logger.log(logger.INFO, 'Adding cities to existing country - visited list');
     const country = Object.keys(locationsVisited)[0];
+    const time = new Date();
     const cities = locationsVisited[country].split(',').map((city) => {
       return city.trim();
     });
+    console.log(country);
+    console.log(cities);
 
     return Profile.findOneAndUpdate({ _id: request.params.id }, {
-      $push: { [`locationsVisited.${country}`]: { $each: cities } },
+      $addToSet: { [`locationsVisited.${country}.cities`]: { $each: cities } },
     }, { new: true })
       .then((profile) => {
         logger.log(logger.INFO, 'Profile updated');
@@ -109,9 +111,16 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
   // if locationsToVisit is a string, it is a country
   if (typeof locationsToVisit === 'string') {
     logger.log(logger.INFO, 'Adding new country to to-visit list');
-    const country = locationsToVisit;
+    const country = locationsVisited;
+    const time = new Date();
+    const newCountry = {
+      country, 
+      cities: [],
+      created: time,
+      updated: time,
+    };
     return Profile.findOneAndUpdate({ _id: request.params.id }, {
-      $set: { [`locationsToVisit.${country}`]: [] }, 
+      $push: { locationsVisited: newCountry },
     }, { new: true })
       .then((profile) => {
         logger.log(logger.INFO, 'Profile updated');
@@ -127,7 +136,7 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
     return city.trim();
   });
   return Profile.findOneAndUpdate({ _id: request.params.id }, {
-    $push: { [`locationsToVisit.${country}`]: { $each: cities } },
+    $push: { [`locationsToVisit.${country}.cities`]: { $each: cities } },
   }, { new: true })
     .then((profile) => {
       logger.log(logger.INFO, 'Profile updated');
