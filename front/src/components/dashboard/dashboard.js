@@ -59,14 +59,14 @@ function Dashboard(props) {
             <div id="list">
               { profile.locationsVisited.length > 0 ?
                   <div>
-                    <h3>Recently Visited.</h3>
+                    <h3>Recently visited...</h3>
                     <PlaceList locations={ profile.locationsVisited }/>
                   </div>
                 : <h3>Add locations you have visited</h3>
               }
               { profile.locationsToVisit.length > 0 ?
                   <div>
-                    <h3>Next to visit.</h3>
+                    <h3>Planning to visit...</h3>
                     <PlaceList locations={ profile.locationsToVisit }/>
                   </div>
                 : <h3>Add locations you want to visit</h3>

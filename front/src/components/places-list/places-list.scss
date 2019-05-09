@@ -1,17 +1,21 @@
 .place-list {
-  width: 80%;
+  width: 60%;
   margin: 0 auto;
   padding: 5px;
   text-align: center;
   border: 1px solid black;
-  background-color: #6F7A83;
+  background-color: #41596D;
+  color: #f6b73c;
+  font-family: 'Crete Round', serif;
+  
+
   ul {
-    width: 50%;
+    width: 100%;
     margin: 0 auto;
     padding: 0;
     li {
       list-style-type: none;
-      margin: 5px;
+      margin: 10px;
     }
   }
 }
