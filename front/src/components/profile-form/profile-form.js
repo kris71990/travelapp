@@ -21,8 +21,13 @@ function ProfileForm(props) {
   function handleSubmit(e) {
     e.preventDefault();
     
-    return onComplete({ 
-      firstName, age, hometown, _id: profile._id, 
+    if (profile) {
+      return onComplete({ 
+        firstName, age, hometown, _id: profile._id, 
+      });
+    } 
+    return onComplete({
+      firstName, age, hometown,
     });
   }
 

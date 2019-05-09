@@ -57,10 +57,20 @@ function Dashboard(props) {
         ? 
           <div className="locs">
             <div id="list">
-              <h3>Recently Visited.</h3>
-              <PlaceList locations={ profile.locationsVisited }/>
-              <h3>Next to visit.</h3>
-              <PlaceList locations={ profile.locationsToVisit }/>
+              { profile.locationsVisited.length > 0 ?
+                  <div>
+                    <h3>Recently Visited.</h3>
+                    <PlaceList locations={ profile.locationsVisited }/>
+                  </div>
+                : <h3>Add locations you have visited</h3>
+              }
+              { profile.locationsToVisit.length > 0 ?
+                  <div>
+                    <h3>Next to visit.</h3>
+                    <PlaceList locations={ profile.locationsToVisit }/>
+                  </div>
+                : <h3>Add locations you want to visit</h3>
+              }
             </div>
             <div id="forms">
               <PlaceForm profile={ profile } type="visited" onComplete={ updateProfile }/> 

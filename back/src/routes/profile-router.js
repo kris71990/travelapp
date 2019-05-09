@@ -71,9 +71,17 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
     if (typeof locationsVisited === 'string') {
       logger.log(logger.INFO, 'Adding new country to visited list');
       const country = locationsVisited;
+      const time = new Date();
+      const newCountry = {
+        country, 
+        cities: [],
+        created: time,
+        updated: time,
+      };
       return Profile.findOneAndUpdate({ _id: request.params.id }, {
-        $set: { [`locationsVisited.${country}`]: [] }, 
+        $push: { locationsVisited: newCountry },
       }, { new: true })
+      // $set: { [`locationsVisited.${country}`]: [] }, 
         .then((profile) => {
           logger.log(logger.INFO, 'Profile updated');
           return response.json(profile);

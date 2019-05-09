@@ -54,20 +54,22 @@ function CityForm(props) {
   let selectJSX;
   if (profile) {
     if (type === 'visited') {
-      const countries = Object.keys(profile.locationsVisited);
+      const countries = profile.locationsVisited;
       selectJSX = countries.map((loc, i) => {
+        const name = loc.country;
         return (
-          <option name={loc} value={loc} key={i}>
-            { formatPlace(loc) }
+          <option name={name} value={name} key={i}>
+            { formatPlace(name) }
           </option>
         );
       });
     } else {
-      const countries = Object.keys(profile.locationsToVisit);
+      const countries = profile.locationsToVisit;
       selectJSX = countries.map((loc, i) => {
+        const name = loc.country;
         return (
-          <option name={loc} value={loc} key={i}>
-            { formatPlace(loc) }
+          <option name={name} value={name} key={i}>
+            { formatPlace(name) }
           </option>
         );
       });

@@ -15,12 +15,12 @@ const profileSchema = mongoose.Schema({
     required: true,
   },
   locationsVisited: {
-    type: Object,
-    default: {},
+    type: Array,
+    default: [],
   },
   locationsToVisit: {
-    type: Object,
-    default: {},
+    type: Array,
+    default: [],
   },
   account: {
     type: mongoose.Schema.ObjectId,
