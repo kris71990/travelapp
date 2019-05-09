@@ -5,9 +5,13 @@ import './places-list.scss';
 
 function PlaceList(props) {
   const { locations } = props;
-  const countries = locations.map((countryObj) => {
-    return countryObj.country;
+  const countries = locations.sort((a, b) => {
+    return Date.parse(b.updated) - Date.parse(a.updated);
+  }).map((countryObj) => {
+    if (!countryObj.name) return null;
+    return countryObj.name;
   });
+
 
   function formatPlace(loc) {
     return `${loc.charAt(0).toUpperCase()}${loc.slice(1)}`;
@@ -21,6 +25,7 @@ function PlaceList(props) {
             <ul>
               {
                 countries.map((location, i) => {
+                  if (!location) return null;
                   return <li key={i}>{ formatPlace(location) }</li>;
                 })
               }

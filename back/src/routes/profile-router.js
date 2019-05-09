@@ -72,8 +72,9 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
       logger.log(logger.INFO, 'Adding new country to visited list');
       const country = locationsVisited;
       const time = new Date();
+      if (!country) return next(new HttpError(400, 'Bad Request'));
       const newCountry = {
-        country, 
+        name: country, 
         cities: [],
         created: time,
         updated: time,
@@ -98,8 +99,9 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
     console.log(country);
     console.log(cities);
 
-    return Profile.findOneAndUpdate({ _id: request.params.id }, {
-      $addToSet: { [`locationsVisited.${country}.cities`]: { $each: cities } },
+    return Profile.findOneAndUpdate({ _id: request.params.id, 'locationsVisited.name': country }, {
+      $addToSet: { 'locationsVisited.$.cities': { $each: cities } },
+      'locationsVisited.$.updated': time,
     }, { new: true })
       .then((profile) => {
         logger.log(logger.INFO, 'Profile updated');
@@ -111,16 +113,17 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
   // if locationsToVisit is a string, it is a country
   if (typeof locationsToVisit === 'string') {
     logger.log(logger.INFO, 'Adding new country to to-visit list');
-    const country = locationsVisited;
+    const country = locationsToVisit;
     const time = new Date();
+    if (!country) return next(new HttpError(400, 'Bad Request'));
     const newCountry = {
-      country, 
+      name: country, 
       cities: [],
       created: time,
       updated: time,
     };
     return Profile.findOneAndUpdate({ _id: request.params.id }, {
-      $push: { locationsVisited: newCountry },
+      $push: { locationsToVisit: newCountry },
     }, { new: true })
       .then((profile) => {
         logger.log(logger.INFO, 'Profile updated');
@@ -132,11 +135,14 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
   // if it is an object { russia: [moscow, spb, etc] }, update country with cities
   logger.log(logger.INFO, 'Adding cities to existing country - to-visit list');
   const country = Object.keys(locationsToVisit)[0];
+  const time = new Date();
   const cities = locationsToVisit[country].split(',').map((city) => {
     return city.trim();
   });
-  return Profile.findOneAndUpdate({ _id: request.params.id }, {
-    $push: { [`locationsToVisit.${country}.cities`]: { $each: cities } },
+
+  return Profile.findOneAndUpdate({ _id: request.params.id, 'locationsToVisit.name': country }, {
+    $addToSet: { 'locationsToVisit.$.cities': { $each: cities } },
+    'locationsToVisit.$.updated': time,
   }, { new: true })
     .then((profile) => {
       logger.log(logger.INFO, 'Profile updated');

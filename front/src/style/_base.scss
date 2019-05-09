@@ -6,7 +6,8 @@ body {
   header {
     width: 100%;
     text-align: left;
-    position: absolute;
+    background-color: blue;
+    position: fixed;
     top: 0;
     * {
       display: inline-block;

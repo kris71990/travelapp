@@ -56,7 +56,8 @@ function CityForm(props) {
     if (type === 'visited') {
       const countries = profile.locationsVisited;
       selectJSX = countries.map((loc, i) => {
-        const name = loc.country;
+        const { name } = loc;
+        if (!name) return null;
         return (
           <option name={name} value={name} key={i}>
             { formatPlace(name) }
@@ -66,7 +67,8 @@ function CityForm(props) {
     } else {
       const countries = profile.locationsToVisit;
       selectJSX = countries.map((loc, i) => {
-        const name = loc.country;
+        const { name } = loc;
+        if (!name) return null;
         return (
           <option name={name} value={name} key={i}>
             { formatPlace(name) }
