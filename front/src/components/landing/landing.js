@@ -57,6 +57,7 @@ function Landing(props) {
       { location.pathname === '/' && !token ? signupJSX : undefined }
       { location.pathname === '/signup' ? signupJSX : undefined }
       { location.pathname === '/login' ? loginJSX : undefined }
+      <footer></footer>
     </div>
   );
 }

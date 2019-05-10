@@ -11,7 +11,7 @@ body {
     color: white;
     position: absolute;
     top: 0;
-    overflow: hidden;
+    overflow: scroll;
     border-bottom: 20px solid #f6b73c;
     * {
       display: inline-block;
@@ -28,6 +28,14 @@ body {
       margin: 20px;
       font-family: 'Crete Round', serif;
     } 
+  }
+
+  footer {
+    width: 100%;
+    background-color: #f6b73c;
+    height: 20px;
+    position: absolute;
+    bottom: 0;
   }
 
   button {

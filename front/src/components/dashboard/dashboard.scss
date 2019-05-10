@@ -12,7 +12,7 @@
     top: 100px;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 20px;
     overflow: auto;
     #list {
       text-align: left;
@@ -24,6 +24,18 @@
     }
     #forms {
       flex: 1;
+      > div {
+        width: 60%;
+        height: auto;
+        margin: 0 auto;
+        border: 1px solid black;
+        background-color: white;
+        padding: 20px;
+      }
+      h3 {
+        width: 60%;
+        margin: 3% auto;
+      }
     }
   }
   
@@ -36,14 +48,5 @@
     h3 {
       margin-bottom: 5px;
     }
-  }
-
-  #forms > * {
-    width: 50%;
-    height: auto;
-    margin: 0 auto;
-    border: 1px solid black;
-    background-color: white;
-    padding: 20px;
   }
 }

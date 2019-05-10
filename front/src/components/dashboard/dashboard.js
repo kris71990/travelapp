@@ -60,19 +60,28 @@ function Dashboard(props) {
               { profile.locationsVisited.length > 0 ?
                   <div>
                     <h3>Recently visited...</h3>
-                    <PlaceList locations={ profile.locationsVisited }/>
+                    <PlaceList locations={ profile.locationsVisited } sortType={ 'date' }/>
                   </div>
                 : <h3>Add locations you have visited</h3>
               }
               { profile.locationsToVisit.length > 0 ?
                   <div>
                     <h3>Planning to visit...</h3>
-                    <PlaceList locations={ profile.locationsToVisit }/>
+                    <PlaceList locations={ profile.locationsToVisit } sortType={ 'date' }/>
                   </div>
                 : <h3>Add locations you want to visit</h3>
               }
+              {
+                profile.locationsVisited.length > 0 ?
+                  <div>
+                    <h3>Most travelled...</h3>
+                    <PlaceList locations={ profile.locationsVisited } sortType={ 'cities' }/>
+                  </div>
+                  : null
+              }
             </div>
             <div id="forms">
+              <h3>Add destinations...</h3>
               <PlaceForm profile={ profile } type="visited" onComplete={ updateProfile }/> 
               <PlaceForm profile={ profile } type="toVisit" onComplete={ updateProfile }/> 
               <CityForm profile={ profile } type="visited" onComplete={ updateProfile }/>
@@ -89,6 +98,7 @@ function Dashboard(props) {
           }
         </div>
       }
+      <footer></footer>
     </div>
   );
 }
