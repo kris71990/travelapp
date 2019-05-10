@@ -42,67 +42,110 @@ profileRouter.get('/profile/me', bearerAuthMiddleware, (request, response, next)
 });
 
 profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, response, next) => {
+  console.log(request.body);
   logger.log(logger.INFO, 'Processing a PUT on /profile/:id');
   const { 
     firstName, age, hometown, locationsVisited, locationsToVisit, 
   } = request.body;
-  if (!firstName || !hometown || !request.account) {
-    return next(new HttpError(400, 'Bad Request'));
-  }
-
-  return Profile.findByIdAndUpdate(request.params.id, {
-    firstName, age, hometown,
-  })
-    .then((profile) => {
-      if (!locationsVisited && !locationsToVisit) {
+  
+  // simple profile update of name, age, or hometown
+  if (!locationsVisited && !locationsToVisit) {
+    if (!firstName || !hometown || !request.account) {
+      return next(new HttpError(400, 'Bad Request'));
+    }
+    return Profile.findByIdAndUpdate(request.params.id, {
+      firstName, age, hometown,
+    }, { new: true })
+      .then((profile) => {
         logger.log(logger.INFO, 'Profile Updated');
         return response.json(profile);
-      }
-      logger.log(logger.INFO, 'Updating location data...');
-      
-      if (locationsVisited) {
-        const countryVisited = Object.keys(locationsVisited)[0];
-        const citiesVisited = locationsVisited[countryVisited];
+      })
+      .catch(next);
+  }
 
-        if (!Object.keys(profile.locationsVisited).includes(countryVisited)) {
-          logger.log(logger.INFO, 'Adding new country and cities - visited list');
-          profile.locationsVisited[countryVisited] = citiesVisited;
-          profile.save()
-            .then((profileSaved) => {
-              logger.log(logger.INFO, 'Profile updated');
-              return response.json(profileSaved);
-            });
-        } else {
-          logger.log(logger.INFO, 'Adding cities to existing country - visited list');
-          profile.locationsVisited[countryVisited].push(...citiesVisited);
-          profile.save()
-            .then((profileSaved) => {
-              logger.log(logger.INFO, 'Profile updated');
-              return response.json(profileSaved);
-            });
-        }
-      } else {
-        const countryToVisit = Object.keys(locationsToVisit)[0];
-        const citiesToVisit = locationsToVisit[countryToVisit];
+  logger.log(logger.INFO, 'Updating location data...');
 
-        if (!Object.keys(profile.locationsToVisit).includes(countryToVisit)) {
-          logger.log(logger.INFO, 'Adding new country and cities - to visit list');
-          profile.locationsToVisit[countryToVisit] = citiesToVisit;
-          profile.save()
-            .then((profileSaved) => {
-              logger.log(logger.INFO, 'Profile updated');
-              return response.json(profileSaved);
-            });
-        } else {
-          logger.log(logger.INFO, 'Adding cities to existing country - to visit list');
-          profile.locationsToVisit[countryToVisit].push(...citiesToVisit);
-          profile.save()
-            .then((profileSaved) => {
-              logger.log(logger.INFO, 'Profile updated');
-              return response.json(profileSaved);
-            });
-        }
-      }
+  // cannot add cities and country at the same time
+  // if locationsVisited is a string, it is a country 
+  if (locationsVisited) {
+    if (typeof locationsVisited === 'string') {
+      logger.log(logger.INFO, 'Adding new country to visited list');
+      const country = locationsVisited;
+      const time = new Date();
+      if (!country) return next(new HttpError(400, 'Bad Request'));
+      const newCountry = {
+        name: country, 
+        cities: [],
+        created: time,
+        updated: time,
+      };
+      return Profile.findOneAndUpdate({ _id: request.params.id }, {
+        $push: { locationsVisited: newCountry },
+      }, { new: true })
+        .then((profile) => {
+          logger.log(logger.INFO, 'Profile updated');
+          return response.json(profile);
+        })
+        .catch(next);
+    } 
+
+    // if it is an object { russia: [moscow, spb, etc] }, update country with cities
+    logger.log(logger.INFO, 'Adding cities to existing country - visited list');
+    const country = Object.keys(locationsVisited)[0];
+    const time = new Date();
+    const cities = locationsVisited[country].split(',').map((city) => {
+      return city.trim();
+    });
+    console.log(country);
+    console.log(cities);
+
+    return Profile.findOneAndUpdate({ _id: request.params.id, 'locationsVisited.name': country }, {
+      $addToSet: { 'locationsVisited.$.cities': { $each: cities } },
+      'locationsVisited.$.updated': time,
+    }, { new: true })
+      .then((profile) => {
+        logger.log(logger.INFO, 'Profile updated');
+        return response.json(profile);
+      })
+      .catch(next);
+  }
+
+  // if locationsToVisit is a string, it is a country
+  if (typeof locationsToVisit === 'string') {
+    logger.log(logger.INFO, 'Adding new country to to-visit list');
+    const country = locationsToVisit;
+    const time = new Date();
+    if (!country) return next(new HttpError(400, 'Bad Request'));
+    const newCountry = {
+      name: country, 
+      cities: [],
+      created: time,
+      updated: time,
+    };
+    return Profile.findOneAndUpdate({ _id: request.params.id }, {
+      $push: { locationsToVisit: newCountry },
+    }, { new: true })
+      .then((profile) => {
+        logger.log(logger.INFO, 'Profile updated');
+        return response.json(profile);
+      })
+      .catch(next);
+  }
+
+  // if it is an object { russia: [moscow, spb, etc] }, update country with cities
+  logger.log(logger.INFO, 'Adding cities to existing country - to-visit list');
+  const country = Object.keys(locationsToVisit)[0];
+  const time = new Date();
+  const cities = locationsToVisit[country].split(',').map((city) => {
+    return city.trim();
+  });
+
+  return Profile.findOneAndUpdate({ _id: request.params.id, 'locationsToVisit.name': country }, {
+    $addToSet: { 'locationsToVisit.$.cities': { $each: cities } },
+    'locationsToVisit.$.updated': time,
+  }, { new: true })
+    .then((profile) => {
+      logger.log(logger.INFO, 'Profile updated');
       return response.json(profile);
     })
     .catch(next);
