@@ -42,7 +42,6 @@ profileRouter.get('/profile/me', bearerAuthMiddleware, (request, response, next)
 });
 
 profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, response, next) => {
-  console.log(request.body);
   logger.log(logger.INFO, 'Processing a PUT on /profile/:id');
   const { 
     firstName, age, hometown, locationsVisited, locationsToVisit, 
@@ -96,8 +95,6 @@ profileRouter.put('/profile/:id', bearerAuthMiddleware, jsonParser, (request, re
     const cities = locationsVisited[country].split(',').map((city) => {
       return city.trim();
     });
-    console.log(country);
-    console.log(cities);
 
     return Profile.findOneAndUpdate({ _id: request.params.id, 'locationsVisited.name': country }, {
       $addToSet: { 'locationsVisited.$.cities': { $each: cities } },
