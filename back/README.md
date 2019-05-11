@@ -14,6 +14,8 @@
 
 **Version: 2.0.0**
 
+---
+
 ## Overview
 
 Track your travels with TripTracker. Create an account and add countries, cities, and other locations that you have visited or are planning on visiting. Plot them on a map to see a visual representation of your journey.
