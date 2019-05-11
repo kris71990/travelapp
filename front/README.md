@@ -17,7 +17,6 @@
 
 ---
 ## Overview
----
 
 Track your travels with TripTracker. Create an account and add countries, cities, and other locations that you have visited or are planning on visiting. Plot them on a map to see a visual representation of your journey.
 
@@ -25,7 +24,6 @@ The user will interact with a frontend built with **React** and **Redux**, trans
 
 ---
 ## Documentation
----
 
 #### Component Architecture 
 

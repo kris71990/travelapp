@@ -16,7 +16,6 @@
 
 ---
 ## Overview
----
 
 Track your travels with TripTracker. Create an account and add countries, cities, and other locations that you have visited or are planning on visiting. Plot them on a map to see a visual representation of your journey.
 
@@ -24,7 +23,6 @@ The server is built with **Node**, **Express**, and manages data storage with **
 
 ---
 ## Documentation
----
 
 ### Database Models
 

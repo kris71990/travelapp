@@ -1,4 +1,5 @@
 # TripTracker
+
 <img src="front/src/assets/flag-banner.png">
 
 ![Travis (.com) branch](https://img.shields.io/travis/com/kris71990/travelapp/master.svg?style=popout)
@@ -6,6 +7,8 @@
 [![David](https://img.shields.io/david/expressjs/express.svg)]( https://github.com/kris71990/travelapp)
 ![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/kris71990/travelapp)
+
+---
 
 **Author: Kris Sakarias**
 
@@ -21,7 +24,9 @@ The server is built with **Node**, **Express**, and manages data storage with **
 
 See subdirectory READMEs for further documentation.
 
+---
 ### Testing
+---
 
 Server unit testing is done with `Mocha` and `Chai`. 96% of server code is covered.
 
