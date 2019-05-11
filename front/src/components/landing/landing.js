@@ -32,7 +32,7 @@ function Landing(props) {
   const signupJSX = 
     <div className="auth">
       <div>
-        <h3>Signup</h3>
+        <h3>~ Signup ~</h3>
         <p>Already have an account?</p>
         <Link to="/login">Login</Link>
       </div>
@@ -42,7 +42,7 @@ function Landing(props) {
   const loginJSX = 
     <div className="auth">
       <div>
-        <h3>Login</h3>
+        <h3>~ Login ~</h3>
         <p>No account?</p>
         <Link to="/signup">Signup</Link>
       </div>
@@ -52,7 +52,7 @@ function Landing(props) {
   return (
     <div className="landing">
       <header>
-        <h1>TravelAid</h1>
+        <h1>TripTracker</h1>
       </header>
       { location.pathname === '/' && !token ? signupJSX : undefined }
       { location.pathname === '/signup' ? signupJSX : undefined }

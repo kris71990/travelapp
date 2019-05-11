@@ -175,40 +175,20 @@ describe('Profile Router', function() {
           return superagent.put(`${API_URL}/profile/${mock.profile._id}`)
             .set('Authorization', `Bearer ${mock.account.token}`)
             .send({
-              firstName: 'kris',
-              hometown: 'seattle',
-              locationsToVisit: { china: ['beijing'] },
+              locationsToVisit: 'china',
             });
         })
         .then((res) => {
           assert.equal(res.status, 200, 'Profile updated - new data added');
-          assert.isObject(res.body.locationsToVisit);
-          assert.isObject(res.body.locationsVisited);
-          assert.lengthOf(Object.keys(res.body.locationsVisited), 2);
-          assert.lengthOf(Object.keys(res.body.locationsToVisit), 3);
-          assert.property(res.body.locationsToVisit, 'china');
-          assert.equal(res.body.locationsToVisit.china[0], 'beijing');
-        });
-    });
-
-    // add to existing country to visit
-    it('should return 200 and updated profile - to visit, add to existing country', function() {
-      let country;
-      return createProfileMock(true)
-        .then((mock) => {
-          country = Object.keys(mock.profile.locationsToVisit)[0];
-          return superagent.put(`${API_URL}/profile/${mock.profile._id}`)
-            .set('Authorization', `Bearer ${mock.account.token}`)
-            .send({
-              firstName: 'kris',
-              hometown: 'seattle',
-              locationsToVisit: { [country]: ['beijing'] },
-            });
-        })
-        .then((res) => {
-          assert.equal(res.status, 200, 'Profile updated - data added to existing country');
-          assert.lengthOf(res.body.locationsToVisit[country], 3);
-          assert.equal(res.body.locationsToVisit[country][2], 'beijing');
+          assert.isArray(res.body.locationsToVisit);
+          assert.isArray(res.body.locationsVisited);
+          assert.lengthOf(res.body.locationsVisited, 2);
+          assert.lengthOf(res.body.locationsToVisit, 3);
+          assert.equal(res.body.locationsToVisit[2].name, 'china');
+          assert.lengthOf(res.body.locationsToVisit[2].cities, 0);
+          assert.isNotNull(res.body.locationsToVisit[2].created);
+          assert.isNotNull(res.body.locationsToVisit[2].updated);
+          assert.equal(res.body.locationsToVisit[2].updated, res.body.locationsToVisit[2].created);
         });
     });
 
@@ -219,39 +199,62 @@ describe('Profile Router', function() {
           return superagent.put(`${API_URL}/profile/${mock.profile._id}`)
             .set('Authorization', `Bearer ${mock.account.token}`)
             .send({ 
-              firstName: 'kris',
-              hometown: 'seattle',
-              locationsVisited: { russia: ['moscow'] }, 
+              locationsVisited: 'russia', 
             });
         })
         .then((res) => {
           assert.equal(res.status, 200, 'Profile updated - new data added');
-          assert.isObject(res.body.locationsVisited);
-          assert.isEmpty(res.body.locationsToVisit);
-          assert.lengthOf(res.body.locationsVisited.russia, 1);
-          assert.hasAllKeys(res.body.locationsVisited, ['russia']);
-          assert.equal(res.body.locationsVisited.russia[0], 'moscow');
+          assert.isArray(res.body.locationsToVisit);
+          assert.isArray(res.body.locationsVisited);
+          assert.lengthOf(res.body.locationsVisited, 1);
+          assert.lengthOf(res.body.locationsToVisit, 0);
+          assert.equal(res.body.locationsVisited[0].name, 'russia');
+          assert.lengthOf(res.body.locationsVisited[0].cities, 0);
+          assert.isNotNull(res.body.locationsVisited[0].created);
+          assert.isNotNull(res.body.locationsVisited[0].updated);
+          assert.equal(res.body.locationsVisited[0].updated, res.body.locationsVisited[0].created);
         });
     });
 
-    // add to existing country visited
-    it('should return 200 and update profile - visited, add to existing country', function() {
+    // add cities to country to visit
+    it('should return 200 and updated profile - to visit, add to existing country', function() {
       let country;
       return createProfileMock(true)
         .then((mock) => {
-          country = Object.keys(mock.profile.locationsVisited)[0];
+          country = mock.profile.locationsToVisit[0].name;
           return superagent.put(`${API_URL}/profile/${mock.profile._id}`)
             .set('Authorization', `Bearer ${mock.account.token}`)
             .send({
-              firstName: 'kris',
-              hometown: 'seattle',
-              locationsVisited: { [country]: ['beijing'] },
+              locationsToVisit: { [country]: 'beijing' },
             });
         })
         .then((res) => {
           assert.equal(res.status, 200, 'Profile updated - data added to existing country');
-          assert.lengthOf(res.body.locationsVisited[country], 3);
-          assert.equal(res.body.locationsVisited[country][2], 'beijing');
+          assert.lengthOf(res.body.locationsToVisit[0].cities, 3);
+          assert.equal(res.body.locationsToVisit[0].cities[2], 'beijing');
+          assert.notEqual(res.body.locationsToVisit[0].updated, 
+            res.body.locationsToVisit[0].created);
+        });
+    });
+
+    // add cities to country visited
+    it('should return 200 and update profile - visited, add to existing country', function() {
+      let country;
+      return createProfileMock(true)
+        .then((mock) => {
+          country = mock.profile.locationsVisited[0].name;
+          return superagent.put(`${API_URL}/profile/${mock.profile._id}`)
+            .set('Authorization', `Bearer ${mock.account.token}`)
+            .send({
+              locationsVisited: { [country]: 'beijing' },
+            });
+        })
+        .then((res) => {
+          assert.equal(res.status, 200, 'Profile updated - data added to existing country');
+          assert.lengthOf(res.body.locationsVisited[0].cities, 3);
+          assert.equal(res.body.locationsVisited[0].cities[2], 'beijing');
+          assert.notEqual(res.body.locationsVisited[0].updated, 
+            res.body.locationsVisited[0].created);
         });
     });
 

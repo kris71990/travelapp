@@ -34,7 +34,7 @@ function Dashboard(props) {
   if (profile) {
     headerJSX = 
       <header>
-        <h1>TravelAid - Welcome { profile.firstName }.</h1>
+        <h1>TripTracker <span>/ Welcome { profile.firstName }.</span></h1>
         <div>
           <button onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</button>
           <button onClick={ logout }>Logout</button>
@@ -43,7 +43,7 @@ function Dashboard(props) {
   } else {
     headerJSX = 
       <header>
-        <h1>TravelAid</h1>
+        <h1>TripTracker</h1>
         <div>
           <button onClick={ logout }>Logout</button>
         </div>
@@ -90,7 +90,7 @@ function Dashboard(props) {
           </div>
         : 
         <div className="prof">
-          <h3>{ profile ? 'Edit' : 'Create' } your profile.</h3>
+          <h3>~ { profile ? 'Edit' : 'Create' } your profile ~</h3>
           {
             profile ? 
               <ProfileForm profile={ profile } onComplete={ handleUpdateSimple }/> 

@@ -1,4 +1,5 @@
-# Travel Aid
+# TripTracker
+<img src="front/src/assets/flag-banner.png">
 
 ![Travis (.com) branch](https://img.shields.io/travis/com/kris71990/travelapp/master.svg?style=popout)
 ![Coverage](https://img.shields.io/badge/coverage-96%25-bright%20green.svg)
@@ -12,13 +13,18 @@
 
 ## Overview
 
-See backend README.
+Track your travels with TripTracker. Create an account and add countries, cities, and other locations that you have visited or are planning on visiting. Plot them on a map to see a visual representation of your journey.
 
+The user will interact with a frontend built with **React** and **Redux**, transpiled from modern Javascript (**ES6**) with **Babel**, and bundled with **Webpack**. 
+
+The server is built with **Node**, **Express**, and manages data storage with **MongoDB** and **Mongoose**.
+
+See subdirectory READMEs for further documentation.
 
 ### Testing
 
-Unit testing is done with `Mocha` and `Chai`. 96% of server code is covered.
+Server unit testing is done with `Mocha` and `Chai`. 96% of server code is covered.
 
 Run tests with `cd back && npm run test`.
 
-Front-end testing is done with `Jest`.
+Front-end testing of components, actions, and reducers is done with `Jest`.

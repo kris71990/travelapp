@@ -14,22 +14,43 @@ const createProfileMock = (isActive) => {
       let toVisit;
 
       if (isActive) {
-        visited = {
-          [faker.lorem.word()]: [faker.lorem.word(), faker.lorem.word()],
-          [faker.lorem.word()]: [faker.lorem.word(), faker.lorem.word()],
-        };
-        toVisit = {
-          [faker.lorem.word()]: [faker.lorem.word(), faker.lorem.word()],
-          [faker.lorem.word()]: [faker.lorem.word(), faker.lorem.word()],
-        };
+        const time = new Date();
+        visited = [
+          { 
+            name: faker.lorem.word(),
+            cities: [faker.lorem.word(), faker.lorem.word()],
+            updated: time,
+            created: time,
+          },
+          {
+            name: faker.lorem.word(),
+            cities: [faker.lorem.word(), faker.lorem.word()],
+            updated: time,
+            created: time,
+          },
+        ];
+        toVisit = [
+          { 
+            name: faker.lorem.word(),
+            cities: [faker.lorem.word(), faker.lorem.word()],
+            updated: time,
+            created: time,
+          },
+          {
+            name: faker.lorem.word(),
+            cities: [faker.lorem.word(), faker.lorem.word()],
+            updated: time,
+            created: time,
+          },
+        ];
       }
 
       return new Profile({
         firstName: faker.name.firstName(),
         age: faker.random.number(),
         hometown: faker.address.state(),
-        locationsVisited: visited ? visited : {},
-        locationsToVisit: toVisit ? toVisit : {},
+        locationsVisited: visited ? visited : [],
+        locationsToVisit: toVisit ? toVisit : [],
         account: mock.account.account._id,
       }).save();
     })
