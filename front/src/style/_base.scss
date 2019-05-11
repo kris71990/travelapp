@@ -2,6 +2,7 @@ body {
   height: 100%;
   width: 100%;
   background-color: #9EA0A1;
+  font-family: 'Crete Round', serif;
   
   header {
     width: 100%;
@@ -26,14 +27,20 @@ body {
     h1 {
       padding: 5px;
       margin: 20px;
-      font-family: 'Crete Round', serif;
+      font-family: 'Acme', sans-serif;
     } 
+    span {
+      font-size: 0.7em;
+      color: #f6b73c;
+      margin: 10px;
+    }
   }
 
   footer {
     width: 100%;
-    background-color: #f6b73c;
-    height: 20px;
+    background-image: url('../assets/flag-banner.png');
+    background-position: 0% 50%;
+    height: 30px;
     position: absolute;
     bottom: 0;
   }
