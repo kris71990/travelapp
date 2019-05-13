@@ -6,6 +6,7 @@ import ProfileForm from '../profile-form/profile-form';
 import PlaceForm from '../place-form/place-form';
 import CityForm from '../city-form/city-form';
 import PlaceList from '../places-list/places-list';
+import PlaceMap from '../place-map/place-map';
 import * as authActions from '../../actions/auth-actions';
 import * as profileActions from '../../actions/profile-actions';
 
@@ -15,14 +16,25 @@ function Dashboard(props) {
   const { 
     profile, logout, createProfile, updateProfile, fetchProfile, 
   } = props;
+  const [toggle, setToggle] = useState(false);
   const [edit, setEdit] = useState(false);
 
   useEffect(() => {
     fetchProfile();
+
+    // if (document.getElementById('map-view')) return;
+    // const scriptElParkView = document.createElement('script');
+    // scriptElParkView.setAttribute('id', 'map-view');
+    // scriptElParkView.setAttribute('src', `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}`);
+    // document.body.appendChild(scriptElParkView);
   }, []);
 
   function handleEdit() {
     setEdit(!edit);
+  }
+
+  function handleToggle() {
+    setToggle(!toggle);
   }
 
   function handleUpdateSimple(prof) {
@@ -36,6 +48,7 @@ function Dashboard(props) {
       <header>
         <h1>TripTracker <span>/ Welcome { profile.firstName }.</span></h1>
         <div>
+          <button onClick={ handleToggle }>{ toggle ? 'Close' : 'Map'}</button>
           <button onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</button>
           <button onClick={ logout }>Logout</button>
         </div>
@@ -57,27 +70,33 @@ function Dashboard(props) {
         ? 
           <div className="locs">
             <div id="list">
-              { profile.locationsVisited.length > 0 ?
+              { toggle ? 
+                <div>
+                  <h2>Map View</h2>
+                  <PlaceMap visited={ profile.locationsVisited } toVisit={ profile.locationsToVisit }/> 
+                </div>
+                : null
+              }
+              { !toggle && profile.locationsVisited.length > 0 ?
                   <div>
                     <h3>Recently visited...</h3>
                     <PlaceList locations={ profile.locationsVisited } sortType={ 'date' }/>
                   </div>
-                : <h3>Add locations you have visited</h3>
+                : null
               }
-              { profile.locationsToVisit.length > 0 ?
+              { !toggle && profile.locationsToVisit.length > 0 ?
                   <div>
                     <h3>Planning to visit...</h3>
                     <PlaceList locations={ profile.locationsToVisit } sortType={ 'date' }/>
                   </div>
-                : <h3>Add locations you want to visit</h3>
+                : null
               }
-              {
-                profile.locationsVisited.length > 0 ?
+              { !toggle && profile.locationsVisited.length > 0 ?
                   <div>
                     <h3>Most travelled...</h3>
                     <PlaceList locations={ profile.locationsVisited } sortType={ 'cities' }/>
                   </div>
-                  : null
+                : null
               }
             </div>
             <div id="forms">

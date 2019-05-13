@@ -17,12 +17,16 @@
     #list {
       text-align: left;
       flex: 1;
+
       div h3 {
         width: 60%;
         margin: 3% auto;
       }
-      h3 {
+      h2, h3 {
         font-style: italic;
+      }
+      h2 {
+        padding-left: 5%;
       }
     }
     #forms {

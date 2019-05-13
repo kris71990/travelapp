@@ -28,6 +28,7 @@ webpackConfig.plugins = [
   }),
   new DefinePlugin({
     API_URL: JSON.stringify(process.env.API_URL),
+    GOOGLE_API_KEY: JSON.stringify(process.env.GOOGLE_API_KEY),
   }),
 ];
 

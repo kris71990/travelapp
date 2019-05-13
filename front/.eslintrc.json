@@ -4,7 +4,8 @@
     "browser": true
   },
   "globals": {
-    "API_URL": true
+    "API_URL": true,
+    "GOOGLE_API_KEY": true
   },
   "parser": "babel-eslint",
   "plugins": ["jest", "react", "react-hooks"],
