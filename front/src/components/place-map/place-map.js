@@ -48,9 +48,9 @@ function PlaceMap(props) {
 
   return (
     <div className="map-container">
-      <div id="country-map"></div>
       <p id="visited">Red - visited</p>
       <p id="next">Blue - next to visit</p>
+      <div id="country-map"></div>
     </div>
   );
 }

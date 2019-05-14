@@ -7,6 +7,7 @@ import PlaceForm from '../place-form/place-form';
 import CityForm from '../city-form/city-form';
 import PlaceList from '../places-list/places-list';
 import PlaceMap from '../place-map/place-map';
+import CityMap from '../city-map/city-map';
 import * as authActions from '../../actions/auth-actions';
 import * as profileActions from '../../actions/profile-actions';
 
@@ -22,11 +23,11 @@ function Dashboard(props) {
   useEffect(() => {
     fetchProfile();
 
-    // if (document.getElementById('map-view')) return;
-    // const scriptElParkView = document.createElement('script');
-    // scriptElParkView.setAttribute('id', 'map-view');
-    // scriptElParkView.setAttribute('src', `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}`);
-    // document.body.appendChild(scriptElParkView);
+    if (document.getElementById('map-view')) return;
+    const scriptElParkView = document.createElement('script');
+    scriptElParkView.setAttribute('id', 'map-view');
+    scriptElParkView.setAttribute('src', `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}`);
+    document.body.appendChild(scriptElParkView);
   }, []);
 
   function handleEdit() {
@@ -72,8 +73,9 @@ function Dashboard(props) {
             <div id="list">
               { toggle ? 
                 <div>
-                  <h2>Map View</h2>
+                  <h2>Map Views</h2>
                   <PlaceMap visited={ profile.locationsVisited } toVisit={ profile.locationsToVisit }/> 
+                  <CityMap visited={ profile.locationsVisited } toVisit={ profile.locationsToVisit }/>
                 </div>
                 : null
               }
