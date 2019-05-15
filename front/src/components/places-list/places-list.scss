@@ -16,6 +16,10 @@
     li {
       list-style-type: none;
       margin: 10px;
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
     }
   }
 }

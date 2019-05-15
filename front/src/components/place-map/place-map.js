@@ -17,8 +17,18 @@ function PlaceMap(props) {
   });
 
   function drawMap() {
-    const countriesVisited = visited.map(country => [country.name, 1]);
-    const countriesToVisit = toVisit.map(country => [country.name, 2]);
+    const countriesVisited = visited.map((country) => {
+      const { name } = country;
+      if (!name) return [null, null];
+      const format = name.charAt(0).toUpperCase() + name.slice(1);
+      return [format, 1];
+    });
+    const countriesToVisit = toVisit.map((country) => {
+      const { name } = country;
+      if (!name) return [null, null];
+      const format = name.charAt(0).toUpperCase() + name.slice(1);
+      return [format, 0];
+    });
     const merged = [...countriesVisited, ...countriesToVisit];
     merged.unshift(['Country', 'Status']);
     const data = google.visualization.arrayToDataTable(merged);
@@ -29,15 +39,13 @@ function PlaceMap(props) {
       resolution: 'countries',
       backgroundColor: {
         fill: '#8EC9EB',
-        stroke: '#f6b73c',
-        strokeWidth: 15,
       },
       legend: 'none',
       datalessRegionColor: '#D2D3D3',
       colorAxis: {
         colors: [
-          '#AD2626',
           '#4153D8',
+          '#AD2626',
         ],
       },
     };

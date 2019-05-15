@@ -22,12 +22,6 @@ function Dashboard(props) {
 
   useEffect(() => {
     fetchProfile();
-
-    if (document.getElementById('map-view')) return;
-    const scriptElParkView = document.createElement('script');
-    scriptElParkView.setAttribute('id', 'map-view');
-    scriptElParkView.setAttribute('src', `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}`);
-    document.body.appendChild(scriptElParkView);
   }, []);
 
   function handleEdit() {

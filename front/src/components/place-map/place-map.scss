@@ -8,9 +8,12 @@
   }
 
   #visited {
+    display: inline-block;
+    padding-right: 20px;
     color: #AD2626,
   }
   #next {
+    display: inline-block;
     color: #4153D8,
   }
 }

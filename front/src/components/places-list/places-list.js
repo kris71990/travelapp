@@ -13,24 +13,28 @@ function PlaceList(props) {
       return b.cities.length - a.cities.length;
     }).map((countryObj) => {
       if (!countryObj.name) return null;
-      return [countryObj.name, countryObj.cities.length];
+      return [countryObj.name, countryObj.cities];
     });
   } else {
     countries = locations.sort((a, b) => {
       return Date.parse(b.updated) - Date.parse(a.updated);
     }).map((countryObj) => {
       if (!countryObj.name) return null;
-      return countryObj.name;
+      return [countryObj.name, countryObj.updated];
     });
   }
 
 
   function formatPlace(loc) {
+    const countryFormat = `${loc[0].charAt(0).toUpperCase()}${loc[0].slice(1)}`;
     switch (sortType) {
       case 'cities':
-        return `${loc[0].charAt(0).toUpperCase()}${loc[0].slice(1)} (${loc[1]})`;
+        let cities = loc[1].map(city => city.charAt(0).toUpperCase() + city.slice(1));
+        cities = cities.join(', ');
+        return [`${countryFormat} (${loc[1].length})`, cities];
       default:
-        return `${loc.charAt(0).toUpperCase()}${loc.slice(1)}`;
+        const updatedAt = new Date(loc[1]).toString();
+        return [countryFormat, updatedAt];
     }
   }
 
@@ -43,7 +47,9 @@ function PlaceList(props) {
               {
                 countries.map((location, i) => {
                   if (!location) return null;
-                  return <li key={i}>{ formatPlace(location) }</li>;
+                  const data = formatPlace(location);
+                  const wiki = `https://www.wikipedia.org/wiki/${location[0]}`;
+                  return <li title={ data[1] } key={i}><a href={ wiki } rel="noopener noreferrer" target="_blank">{ data[0] }</a></li>;
                 })
               }
             </ul>
