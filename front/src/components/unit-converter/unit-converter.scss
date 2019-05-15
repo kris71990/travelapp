@@ -1,0 +1,80 @@
+@keyframes fadein {
+  from { 
+    opacity: 0; 
+  }
+  to { 
+    opacity: 1; 
+  }
+}
+
+.unit-container {
+  height: 50vh;
+  position: absolute;
+  margin: auto;
+  top: 100px;
+  right: 0px;
+  left: 0px;
+  bottom: 20px;
+  text-align: center;
+  
+  p, form {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 auto;
+  }
+
+  > p {
+    width: 20%;
+    margin-left: 50px;
+    line-height: 100px;
+    height: 100px;
+    padding: 20px;
+    border: 5px solid #f6b73c;
+    background-color: #41596D;
+    color: white;
+    font-size: 1.5em;
+    animation: fadein 1s;
+  }
+
+  form {
+    width: 50%;
+    height: 100px;
+    padding: 20px;
+    border: 5px solid #f6b73c;
+    background-color: #41596D;
+  
+    label {
+      color: white;
+      padding-right: 10px;
+    }
+  
+    p {
+      margin-left: 10px;
+      display: inline-block;
+    }
+    
+    div * {
+      display: inline-block;
+    }
+  
+    p {
+      border: 1px solid black;
+      border-radius: 1px;
+      padding: 3px 20px;
+      background-color: #BFCBD4;
+    }
+  
+    p:focus {
+      outline: none;
+    }
+    
+    p:active {
+      background-color: #A4A4A4;
+    }
+    
+    p:hover {
+      cursor: pointer;
+    }
+  }
+}
+

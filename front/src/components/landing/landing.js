@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import * as authActions from '../../actions/auth-actions';
 import AuthForm from '../auth-form/auth-form';
+import UnitConverter from '../unit-converter/unit-converter';
 
 import './landing.scss';
 
 function Landing(props) {
+  const [toggle, setToggle] = useState(false);
   const { 
     token, signup, login, history, location, 
   } = props;
@@ -27,6 +29,10 @@ function Landing(props) {
         history.push('/me');
       })
       .catch(console.error);
+  }
+
+  function handleToggle() {
+    setToggle(!toggle);
   }
 
   const signupJSX = 
@@ -53,10 +59,14 @@ function Landing(props) {
     <div className="landing">
       <header>
         <h1>TripTracker</h1>
+        <div>
+          <button onClick={ handleToggle }>{ toggle ? 'Close' : 'Convert Temperature'}</button>
+        </div>
       </header>
-      { location.pathname === '/' && !token ? signupJSX : undefined }
-      { location.pathname === '/signup' ? signupJSX : undefined }
-      { location.pathname === '/login' ? loginJSX : undefined }
+      { toggle ? <UnitConverter/> : null }
+      { !toggle && location.pathname === '/' && !token ? signupJSX : undefined }
+      { !toggle && location.pathname === '/signup' ? signupJSX : undefined }
+      { !toggle && location.pathname === '/login' ? loginJSX : undefined }
       <footer></footer>
     </div>
   );

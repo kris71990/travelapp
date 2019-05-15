@@ -12,6 +12,7 @@ import * as authActions from '../../actions/auth-actions';
 import * as profileActions from '../../actions/profile-actions';
 
 import './dashboard.scss';
+import UnitConverter from '../unit-converter/unit-converter';
 
 function Dashboard(props) {
   const { 
@@ -19,6 +20,7 @@ function Dashboard(props) {
   } = props;
   const [toggle, setToggle] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [convertToggle, setConvertToggle] = useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -37,12 +39,17 @@ function Dashboard(props) {
       .then(() => handleEdit());
   }
 
+  function handleConvert() {
+    setConvertToggle(!convertToggle);
+  }
+
   let headerJSX; 
   if (profile) {
     headerJSX = 
       <header>
         <h1>TripTracker <span>/ Welcome { profile.firstName }.</span></h1>
         <div>
+          <button onClick={ handleConvert }>{ convertToggle ? 'Close' : 'Convert Units' }</button>
           <button onClick={ handleToggle }>{ toggle ? 'Close' : 'Map'}</button>
           <button onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</button>
           <button onClick={ logout }>Logout</button>
@@ -61,8 +68,9 @@ function Dashboard(props) {
   return (
     <div className="dashboard">
       { headerJSX }
-      { profile && !edit
-        ? 
+      { !convertToggle ?
+        profile && !edit 
+          ? 
           <div className="locs">
             <div id="list">
               { toggle ? 
@@ -103,15 +111,16 @@ function Dashboard(props) {
               <CityForm profile={ profile } type="toVisit" onComplete={ updateProfile }/>
             </div>
           </div>
-        : 
-        <div className="prof">
-          <h3>~ { profile ? 'Edit' : 'Create' } your profile ~</h3>
-          {
-            profile ? 
-              <ProfileForm profile={ profile } onComplete={ handleUpdateSimple }/> 
-              : <ProfileForm onComplete={ createProfile }/> 
-          }
-        </div>
+          : 
+          <div className="prof">
+            <h3>~ { profile ? 'Edit' : 'Create' } your profile ~</h3>
+            {
+              profile ? 
+                <ProfileForm profile={ profile } onComplete={ handleUpdateSimple }/> 
+                : <ProfileForm onComplete={ createProfile }/> 
+            }
+          </div>
+        : <UnitConverter/>
       }
       <footer></footer>
     </div>
