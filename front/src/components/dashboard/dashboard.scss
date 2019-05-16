@@ -18,6 +18,11 @@
     right: 0;
     bottom: 20px;
     overflow: scroll;
+
+    @media only screen and (max-width: 600px) {
+      flex-direction: column;
+    }
+
     #list {
       text-align: left;
       flex: 1;
@@ -25,6 +30,10 @@
       div h3 {
         width: 60%;
         margin: 3% auto;
+
+        @media only screen and (max-width: 800px) {
+          width: 80%;
+        }
       }
       h2, h3 {
         font-style: italic;
@@ -47,6 +56,10 @@
         width: 60%;
         margin: 3% auto;
         font-style: italic;
+
+        @media only screen and (max-width: 800px) {
+          width: 80%;
+        }
       }
     }
   }

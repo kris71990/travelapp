@@ -7,7 +7,6 @@ import './city-map.scss';
 
 import visitedIcon from '../../assets/star-3-red.png';
 import toVisitIcon from '../../assets/star-3-blue.png';
-import loadingGif from '../../assets/ajax-loader.gif';
 
 function CityMap(props) {
   const { visited, toVisit } = props;
@@ -37,7 +36,6 @@ function CityMap(props) {
     });
     const merged = [...citiesVisited, ...citiesToVisit];
 
-    const markerUrl = 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/';
     const data = new google.visualization.DataTable();
     data.addColumn('string', 'City');
     data.addColumn('string', 'Location');

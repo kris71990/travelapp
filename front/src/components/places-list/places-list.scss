@@ -8,6 +8,9 @@
   color: #f6b73c;
   font-family: 'Crete Round', serif;
   
+  @media only screen and (max-width: 800px) {
+    width: 80%;
+  }
 
   ul {
     width: 100%;
