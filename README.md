@@ -28,7 +28,6 @@ See subdirectory READMEs for further documentation.
 
 ---
 ## A Quick Look
----
 
 <img src="front/src/assets/trip-tracker3.jpeg" width="700px">
 
