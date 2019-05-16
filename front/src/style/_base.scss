@@ -19,6 +19,10 @@ body {
     div {
       float: right;
     }
+    img {
+      display: none;
+    }
+
     button {
       padding: 10px;
       margin: 20px;
@@ -32,6 +36,39 @@ body {
       font-size: 0.7em;
       color: #f6b73c;
       margin: 10px;
+    }
+
+    #mobile-menu {
+      display: none;
+    }
+
+    @media only screen and (max-width: 800px) {
+      #mobile-menu {
+        height: 80px;
+        display: block;
+        background-color: #f6b73c;
+        padding: 10px 30px 0px 30px;
+
+        ul {
+          margin: 0;
+          padding: 0;
+          li {
+            margin-left: 0;
+            display: block;
+            cursor: pointer;
+          }
+        }
+      }
+      img {
+        display: inline-block;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+      }
+      div button {
+        display: none;
+      }
     }
   }
 

@@ -53,6 +53,14 @@ function Dashboard(props) {
           <button onClick={ handleToggle }>{ toggle ? 'Close' : 'Map'}</button>
           <button onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</button>
           <button onClick={ logout }>Logout</button>
+          <div id="mobile-menu">
+            <ul>
+              <li onClick={ handleConvert }>{ convertToggle ? 'Close' : 'Convert' }</li>
+              <li onClick={ handleToggle }>{ toggle ? 'Close' : 'Map'}</li>
+              <li onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</li>
+              <li onClick={ logout }>Logout</li>
+            </ul>
+          </div>
         </div>
       </header>;
   } else {

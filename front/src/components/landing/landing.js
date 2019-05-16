@@ -59,9 +59,7 @@ function Landing(props) {
     <div className="landing">
       <header>
         <h1>TripTracker</h1>
-        <div>
-          <button onClick={ handleToggle }>{ toggle ? 'Close' : 'Convert Units'}</button>
-        </div>
+        <button onClick={ handleToggle }>{ toggle ? 'Close' : 'Convert Units'}</button>
       </header>
       { toggle ? 
         <div className="converters">
