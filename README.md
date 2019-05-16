@@ -27,6 +27,21 @@ The server is built with **Node**, **Express**, and manages data storage with **
 See subdirectory READMEs for further documentation.
 
 ---
+## A Quick Look
+
+<img src="front/src/assets/trip-tracker3.jpeg" width="700px">
+
+Visualize your past and future travels.
+
+<img src="front/src/assets/trip-tracker2.jpeg" width="500px">
+
+Add and pin cities or locations you have visited.
+
+<img src="front/src/assets/trip-tracker1.jpeg" width="500px">
+
+
+
+---
 ### Testing
 ---
 

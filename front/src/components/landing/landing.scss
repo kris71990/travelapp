@@ -5,6 +5,16 @@
   justify-content: center;
   flex-flow: column;
   height: 100vh;
+
+  header {
+    button {
+      float: right;
+    }
+  }
+
+  .converters {
+    margin: 5px 0;
+  }
   
   .auth {
     width: 50vw;

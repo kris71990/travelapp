@@ -1,0 +1,22 @@
+.map-container {
+  margin: 2% auto;
+  padding: 0% 5% 1% 5%;
+
+  h3 {
+    margin: 0;
+  }
+
+  #country-map {
+    width: 100%;
+  }
+
+  #visited {
+    display: inline-block;
+    padding-right: 20px;
+    color: #AD2626,
+  }
+  #next {
+    display: inline-block;
+    color: #4153D8,
+  }
+}

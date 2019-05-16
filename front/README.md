@@ -22,6 +22,18 @@ Track your travels with TripTracker. Create an account and add countries, cities
 
 The user will interact with a frontend built with **React** and **Redux**, transpiled from modern Javascript (**ES6**) with **Babel**, and bundled with **Webpack**.
 
+*Environment Variables*
+
+A Google Maps API key is required. Include it in an `.env` file along with the following:
+
+`API_URL=http://localhost:3000`
+
+`NODE_ENV=development`
+
+`PORT=9000`
+
+`GOOGLE_API_KEY={ API KEY }`
+
 ## Documentation
 
 #### Component Architecture 

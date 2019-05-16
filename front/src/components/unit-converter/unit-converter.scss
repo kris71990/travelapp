@@ -1,0 +1,87 @@
+@keyframes fadein {
+  from { 
+    opacity: 0; 
+  }
+  to { 
+    opacity: 1; 
+  }
+}
+
+.unit-container {
+  text-align: center;
+  
+  p, form {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 auto;
+  }
+
+  > p {
+    width: 20%;
+    margin-left: 50px;
+    line-height: 100px;
+    height: 100px;
+    padding: 20px;
+    border: 5px solid #f6b73c;
+    background-color: #41596D;
+    color: white;
+    font-size: 1.3em;
+    animation: fadein 1s;
+    overflow: scroll;
+  }
+
+  form {
+    width: 50%;
+    height: 100px;
+    padding: 20px;
+    border: 5px solid #f6b73c;
+    background-color: #41596D;
+  
+    label {
+      color: white;
+      padding: 10px;
+    }
+
+    input {
+      width: 100px;
+    }
+  
+    p {
+      display: inline-block;
+      border: 1px solid black;
+      border-radius: 1px;
+      padding: 3px 20px;
+      margin: 5px;
+      background-color: #BFCBD4;
+    }
+    
+    div * {
+      display: inline-block;
+      margin: 10px;
+    }
+
+    p:active {
+      background-color: #A4A4A4;
+    }
+    
+    p:hover {
+      cursor: pointer;
+    }
+  
+  }
+  @media only screen and (max-width: 600px) {
+    > p {
+      height: 140px;
+      line-height: normal;
+      margin: 0;
+    }
+
+    form {
+      height: 140px;
+      input {
+        margin: 10px;
+      }
+    }
+  }
+}
+

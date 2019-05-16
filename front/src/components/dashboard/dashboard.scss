@@ -4,6 +4,10 @@
   justify-content: center;
   flex-flow: column;
   height: 100vh;
+
+  .converters {
+    margin: 5px 0;
+  }
   
   .locs {
     display: flex;
@@ -13,16 +17,29 @@
     left: 0;
     right: 0;
     bottom: 20px;
-    overflow: auto;
+    overflow: scroll;
+
+    @media only screen and (max-width: 600px) {
+      flex-direction: column;
+    }
+
     #list {
       text-align: left;
       flex: 1;
+
       div h3 {
         width: 60%;
         margin: 3% auto;
+
+        @media only screen and (max-width: 800px) {
+          width: 80%;
+        }
       }
-      h3 {
+      h2, h3 {
         font-style: italic;
+      }
+      h2 {
+        padding-left: 5%;
       }
     }
     #forms {
@@ -39,6 +56,10 @@
         width: 60%;
         margin: 3% auto;
         font-style: italic;
+
+        @media only screen and (max-width: 800px) {
+          width: 80%;
+        }
       }
     }
   }

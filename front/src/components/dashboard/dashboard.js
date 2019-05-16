@@ -6,16 +6,21 @@ import ProfileForm from '../profile-form/profile-form';
 import PlaceForm from '../place-form/place-form';
 import CityForm from '../city-form/city-form';
 import PlaceList from '../places-list/places-list';
+import PlaceMap from '../place-map/place-map';
+import CityMap from '../city-map/city-map';
 import * as authActions from '../../actions/auth-actions';
 import * as profileActions from '../../actions/profile-actions';
 
 import './dashboard.scss';
+import UnitConverter from '../unit-converter/unit-converter';
 
 function Dashboard(props) {
   const { 
     profile, logout, createProfile, updateProfile, fetchProfile, 
   } = props;
+  const [toggle, setToggle] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [convertToggle, setConvertToggle] = useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -25,9 +30,17 @@ function Dashboard(props) {
     setEdit(!edit);
   }
 
+  function handleToggle() {
+    setToggle(!toggle);
+  }
+
   function handleUpdateSimple(prof) {
     updateProfile(prof)
       .then(() => handleEdit());
+  }
+
+  function handleConvert() {
+    setConvertToggle(!convertToggle);
   }
 
   let headerJSX; 
@@ -36,8 +49,18 @@ function Dashboard(props) {
       <header>
         <h1>TripTracker <span>/ Welcome { profile.firstName }.</span></h1>
         <div>
+          <button onClick={ handleConvert }>{ convertToggle ? 'Close' : 'Convert' }</button>
+          <button onClick={ handleToggle }>{ toggle ? 'Close' : 'Map'}</button>
           <button onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</button>
           <button onClick={ logout }>Logout</button>
+          <div id="mobile-menu">
+            <ul>
+              <li onClick={ handleConvert }>{ convertToggle ? 'Close' : 'Convert' }</li>
+              <li onClick={ handleToggle }>{ toggle ? 'Close' : 'Map'}</li>
+              <li onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</li>
+              <li onClick={ logout }>Logout</li>
+            </ul>
+          </div>
         </div>
       </header>;
   } else {
@@ -53,31 +76,39 @@ function Dashboard(props) {
   return (
     <div className="dashboard">
       { headerJSX }
-      { profile && !edit
-        ? 
+      { !convertToggle ?
+        profile && !edit 
+          ? 
           <div className="locs">
             <div id="list">
-              { profile.locationsVisited.length > 0 ?
+              { toggle ? 
+                <div>
+                  <h2>Map Views</h2>
+                  <PlaceMap visited={ profile.locationsVisited } toVisit={ profile.locationsToVisit }/> 
+                  <CityMap visited={ profile.locationsVisited } toVisit={ profile.locationsToVisit }/>
+                </div>
+                : null
+              }
+              { !toggle && profile.locationsVisited.length > 0 ?
                   <div>
                     <h3>Recently visited...</h3>
                     <PlaceList locations={ profile.locationsVisited } sortType={ 'date' }/>
                   </div>
-                : <h3>Add locations you have visited</h3>
+                : null
               }
-              { profile.locationsToVisit.length > 0 ?
+              { !toggle && profile.locationsToVisit.length > 0 ?
                   <div>
                     <h3>Planning to visit...</h3>
                     <PlaceList locations={ profile.locationsToVisit } sortType={ 'date' }/>
                   </div>
-                : <h3>Add locations you want to visit</h3>
+                : null
               }
-              {
-                profile.locationsVisited.length > 0 ?
+              { !toggle && profile.locationsVisited.length > 0 ?
                   <div>
                     <h3>Most travelled...</h3>
                     <PlaceList locations={ profile.locationsVisited } sortType={ 'cities' }/>
                   </div>
-                  : null
+                : null
               }
             </div>
             <div id="forms">
@@ -88,15 +119,20 @@ function Dashboard(props) {
               <CityForm profile={ profile } type="toVisit" onComplete={ updateProfile }/>
             </div>
           </div>
+          : 
+          <div className="prof">
+            <h3>~ { profile ? 'Edit' : 'Create' } your profile ~</h3>
+            {
+              profile ? 
+                <ProfileForm profile={ profile } onComplete={ handleUpdateSimple }/> 
+                : <ProfileForm onComplete={ createProfile }/> 
+            }
+          </div>
         : 
-        <div className="prof">
-          <h3>~ { profile ? 'Edit' : 'Create' } your profile ~</h3>
-          {
-            profile ? 
-              <ProfileForm profile={ profile } onComplete={ handleUpdateSimple }/> 
-              : <ProfileForm onComplete={ createProfile }/> 
-          }
-        </div>
+          <div className="converters">
+            <UnitConverter type="temp"/>
+            <UnitConverter type="length"/>
+          </div>
       }
       <footer></footer>
     </div>
