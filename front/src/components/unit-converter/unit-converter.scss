@@ -8,13 +8,6 @@
 }
 
 .unit-container {
-  height: 50vh;
-  position: absolute;
-  margin: auto;
-  top: 100px;
-  right: 0px;
-  left: 0px;
-  bottom: 20px;
   text-align: center;
   
   p, form {
@@ -49,25 +42,18 @@
     }
   
     p {
-      margin-left: 10px;
-      display: inline-block;
-    }
-    
-    div * {
-      display: inline-block;
-    }
-  
-    p {
+      margin: 10px;
+      display: inline;
       border: 1px solid black;
       border-radius: 1px;
       padding: 3px 20px;
       background-color: #BFCBD4;
     }
-  
-    p:focus {
-      outline: none;
-    }
     
+    div * {
+      display: inline-block;
+    }
+
     p:active {
       background-color: #A4A4A4;
     }

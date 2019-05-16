@@ -49,7 +49,7 @@ function Dashboard(props) {
       <header>
         <h1>TripTracker <span>/ Welcome { profile.firstName }.</span></h1>
         <div>
-          <button onClick={ handleConvert }>{ convertToggle ? 'Close' : 'Convert Units' }</button>
+          <button onClick={ handleConvert }>{ convertToggle ? 'Close' : 'Convert' }</button>
           <button onClick={ handleToggle }>{ toggle ? 'Close' : 'Map'}</button>
           <button onClick={ handleEdit }>{ edit ? 'Close' : 'Edit' }</button>
           <button onClick={ logout }>Logout</button>
@@ -120,7 +120,11 @@ function Dashboard(props) {
                 : <ProfileForm onComplete={ createProfile }/> 
             }
           </div>
-        : <UnitConverter/>
+        : 
+          <div className="converters">
+            <UnitConverter type="temp"/>
+            <UnitConverter type="length"/>
+          </div>
       }
       <footer></footer>
     </div>

@@ -60,10 +60,16 @@ function Landing(props) {
       <header>
         <h1>TripTracker</h1>
         <div>
-          <button onClick={ handleToggle }>{ toggle ? 'Close' : 'Convert Temperature'}</button>
+          <button onClick={ handleToggle }>{ toggle ? 'Close' : 'Convert Units'}</button>
         </div>
       </header>
-      { toggle ? <UnitConverter/> : null }
+      { toggle ? 
+        <div className="converters">
+          <UnitConverter type="temp"/> 
+          <UnitConverter type="len"/>
+        </div>
+        : null 
+      }
       { !toggle && location.pathname === '/' && !token ? signupJSX : undefined }
       { !toggle && location.pathname === '/signup' ? signupJSX : undefined }
       { !toggle && location.pathname === '/login' ? loginJSX : undefined }
